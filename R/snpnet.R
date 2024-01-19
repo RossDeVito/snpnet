@@ -209,6 +209,7 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   for(s in splits) pgen[[s]] <- pgenlibr::NewPgen(paste0(genotype.pfile, '.pgen'), pvar=pvar, sample_subset=match(ids[[s]], ids[['psam']]))
   pgenlibr::ClosePvar(pvar)
 
+  snpnetLogger('Compute stats')
   stats <- computeStats(genotype.pfile, phe[['train']]$ID, configs = configs)
 
   ### --- Keep track of the lambda index at which each variant is first added to the model, if required --- ###
