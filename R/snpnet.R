@@ -194,7 +194,15 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
 
   ### --- Read genotypes --- ###
   snpnetLogger('Read genotypes')
-  vars <- dplyr::mutate(dplyr::rename(data.table::fread(cmd=paste0(configs[['zstdcat.path']], ' ', paste0(genotype.pfile, '.pvar.zst'))), 'CHROM'='#CHROM'), VAR_ID=paste(ID, ALT, sep='_'))$VAR_ID
+  
+  vars <- dplyr::mutate(
+    dplyr::rename(
+      data.table::fread(paste0(genotype.pfile, '.pvar'))),
+      'CHROM'='#CHROM'
+    ),
+    VAR_ID=paste(ID, ALT, sep='_')
+  )$VAR_ID
+  
   configs[["excludeSNP"]] <- base::intersect(configs[["excludeSNP"]], vars)
   pvar <- pgenlibr::NewPvar(paste0(genotype.pfile, '.pvar.zst'))
   pgen <- list()
