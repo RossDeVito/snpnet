@@ -111,23 +111,28 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   snpnetLogger('Preprocessing start..')
 
   ### --- Read genotype IDs --- ###
+  snpnetLogger('Read genotype IDs')
   ids <- list(); phe <- list()
   ids[['psam']] <- readIDsFromPsam(paste0(genotype.pfile, '.psam'))
 
   ### --- combine the specified configs with the default values --- ###
+  snpnetLogger('combine the specified configs with the default values')
   if (!is.null(lambda)) nlambda <- length(lambda)
   configs <- setupConfigs(configs, genotype.pfile, phenotype.file, phenotype, covariates, alpha, nlambda, split.col, p.factor, status.col, mem)
   if (configs[['prevIter']] >= configs[['niter']]) stop("prevIter is greater or equal to the total number of iterations.")
 
   ### --- Read phenotype file --- ###
+  snpnetLogger('Read phenotype file')
   phe[['master']] <- readPheMaster(phenotype.file, ids[['psam']], family, covariates, phenotype, status.col, split.col, configs)
 
   ### --- infer family and update the configs --- ###
+  snpnetLogger('infer family and update the configs')
   if (is.null(family)) family <- inferFamily(phe[['master']], phenotype, status.col)
   configs <- updateConfigsWithFamily(configs, family)
   if (configs[['verbose']]) print(configs)
 
   ### --- Check whether to use glmnet or glmnetPlus --- ###
+  snpnetLogger('Check whether to use glmnet or glmnetPlus')
   if (configs[['use.glmnetPlus']]) {
     glmnet.settings <- glmnetPlus::glmnet.control()
     on.exit(do.call(glmnetPlus::glmnet.control, glmnet.settings))
@@ -139,6 +144,7 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   }
 
   ### --- Process phenotypes --- ###
+  snpnetLogger('Process phenotypes')
   if (family == "binomial"){
       # The input binary phenotype is coded as 2/1 (case/control)
       # For glmnet, we map this to 1/0 (case/control)
@@ -150,6 +156,7 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   }
 
   ### --- Define the set of individual IDs for training (and validation) set(s) --- ###
+  snpnetLogger('Define training and validation sets')
   if(is.null(split.col)){
       splits <- c('train')
       ids[['train']] <- phe[['master']]$ID
@@ -161,6 +168,7 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   }
 
   ### --- Prepare the feature matrix --- ###
+  snpnetLogger('Prepare the feature matrix')
   features <- list()
   for(s in splits){
       phe[[s]] <- phe[['master']][match(ids[[s]], phe[['master']]$ID), ]
@@ -174,6 +182,7 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   }
 
   ### --- Prepare the response --- ###
+  snpnetLogger('Prepare the response')
   response <- list() ; status <- list() ; surv <- list() ; pred <- list()
   for(s in splits){
       response[[s]] <- phe[[s]][[phenotype]]
@@ -184,6 +193,7 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   }
 
   ### --- Read genotypes --- ###
+  snpnetLogger('Read genotypes')
   vars <- dplyr::mutate(dplyr::rename(data.table::fread(cmd=paste0(configs[['zstdcat.path']], ' ', paste0(genotype.pfile, '.pvar.zst'))), 'CHROM'='#CHROM'), VAR_ID=paste(ID, ALT, sep='_'))$VAR_ID
   configs[["excludeSNP"]] <- base::intersect(configs[["excludeSNP"]], vars)
   pvar <- pgenlibr::NewPvar(paste0(genotype.pfile, '.pvar.zst'))
