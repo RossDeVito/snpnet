@@ -222,10 +222,10 @@ readIDsFromPsam <- function(psam){
     if (!('#FID' %in% colnames(df))) {
         if ('IID' %in% colnames(df)) {
             warning("#FID column not found in the psam file. Assume and use FID = IID.")
-            df['#FID'] <- df['IID']
+            df[['#FID']] <- df[['IID']]
         } else if ('#IID' %in% colnames(df)) {
             warning("#FID column not found in the psam file. Assume and use FID = #IID.")
-            df['#FID'] <- df['#IID']
+            df[['#FID']] <- df[['#IID']]
         } else {
             stop('Neither IID nor #IID column found in the psam file.')
         }
@@ -238,7 +238,7 @@ readIDsFromPsam <- function(psam){
     } else {
         df <- df %>%
         dplyr::rename(FID = '#FID', IID = '#IID') %>%
-        dplyr::mutate(ID = IID)
+        dplyr::mutate(ID = df[['#IID']])
     }
     
     df$ID
