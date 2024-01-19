@@ -197,10 +197,10 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   
   vars <- dplyr::mutate(
     dplyr::rename(
-      data.table::fread(paste0(genotype.pfile, '.pvar'))),
-      'CHROM'='#CHROM'
+      data.table::fread(paste0(genotype.pfile, '.pvar')),
+      'CHROM' = '#CHROM'
     ),
-    VAR_ID=paste(ID, ALT, sep='_')
+    VAR_ID = paste(ID, ALT, sep = '_')
   )$VAR_ID
   
   configs[["excludeSNP"]] <- base::intersect(configs[["excludeSNP"]], vars)
