@@ -134,7 +134,14 @@ predict_snpnet <- function(fit = NULL, saved_path = NULL, new_genotype_file, new
     }
   }
 
-  vars <- dplyr::mutate(dplyr::rename(data.table::fread(cmd=paste0(configs[["zstdcat.path"]], ' ', paste0(new_genotype_file, '.pvar.zst'))), 'CHROM'='#CHROM'), VAR_ID=paste(ID, ALT, sep='_'))$VAR_ID
+  vars <- dplyr::mutate(
+              dplyr::rename(
+                  data.table::fread(paste0(genotype.pfile, '.pvar')),
+                  'CHROM' = '#CHROM'
+              ),
+              VAR_ID = paste(ID, ALT, sep = '_')
+          )$VAR_ID
+
   pvar <- pgenlibr::NewPvar(paste0(new_genotype_file, '.pvar.zst'))
   chr <- list()
   for (split in split_name) {
