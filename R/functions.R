@@ -387,7 +387,7 @@ computeStats <- function(pfile, ids, configs) {
       cmd_plink2 <- paste(
           configs[['plink2.path']],
           '--threads', configs[['nCores']],
-          '--pfile', pfile, ifelse(configs[['vzs']], 'vzs', ''),
+          '--pfile', pfile,
           '--keep', keep_f,
           '--out', configs[['gcount.full.prefix']],
           '--geno-counts cols=chrom,pos,ref,alt,homref,refalt,altxy,hapref,hapalt,missing,nobs'
