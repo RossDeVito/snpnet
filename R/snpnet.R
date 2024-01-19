@@ -204,7 +204,7 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
   )$VAR_ID
   
   configs[["excludeSNP"]] <- base::intersect(configs[["excludeSNP"]], vars)
-  pvar <- pgenlibr::NewPvar(paste0(genotype.pfile, '.pvar.zst'))
+  pvar <- pgenlibr::NewPvar(paste0(genotype.pfile, '.pvar'))
   pgen <- list()
   for(s in splits) pgen[[s]] <- pgenlibr::NewPgen(paste0(genotype.pfile, '.pgen'), pvar=pvar, sample_subset=match(ids[[s]], ids[['psam']]))
   pgenlibr::ClosePvar(pvar)
