@@ -437,6 +437,7 @@ computeStats <- function(pfile, ids, configs) {
 }
 
 readBinMat <- function(fhead, configs){
+    print("in readBinMat")
     # This is a helper function to read binary matrix file (from plink2 --variant-score zs bin)
     rows <- data.table::fread(cmd=paste0(configs[['zstdcat.path']], ' ', fhead, '.vars.zst'), head=F)$V1
     cols <- data.table::fread(paste0(fhead, '.cols'), head=F)$V1
