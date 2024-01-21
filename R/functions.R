@@ -142,7 +142,7 @@ predict_snpnet <- function(fit = NULL, saved_path = NULL, new_genotype_file, new
     VAR_ID=paste(ID, ALT, sep='_')
   )$VAR_ID
                             
-  pvar <- pgenlibr::NewPvar(paste0(new_genotype_file, '.pvar.zst'))
+  pvar <- pgenlibr::NewPvar(paste0(new_genotype_file, '.pvar'))
   chr <- list()
   for (split in split_name) {
     chr[[split]] <- pgenlibr::NewPgen(paste0(new_genotype_file, '.pgen'), pvar = pvar, sample_subset = match(ids[[split]], ids[["psam"]]))
