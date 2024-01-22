@@ -481,7 +481,7 @@ computeProduct <- function(residual, pfile, vars, stats, configs, iter) {
   cmd_plink2 <- paste(
     configs[['plink2.path']],
     '--threads', configs[['nCores']],
-    '--pfile', pfile,
+    '--pfile', pfile, ifelse(configs[['vzs']], 'vzs', ''),
     '--read-freq', paste0(configs[['gcount.full.prefix']], '.gcount'),
     '--keep', residual_f,
     '--out', stringr::str_replace_all(residual_f, '.tsv$', ''),
