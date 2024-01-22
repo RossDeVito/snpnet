@@ -443,7 +443,7 @@ computeStats <- function(pfile, ids, configs) {
 
 readBinMat <- function(fhead, configs){
     print("in readBinMat")
-    # This is a helper function to read binary matrix file (from plink2 --variant-score zs bin)
+    # This is a helper function to read binary matrix file (from plink2 --variant-score bin)
     rows <- data.table::fread(paste0(fhead, '.vars'), head=F)$V1
     cols <- data.table::fread(paste0(fhead, '.cols'), head=F)$V1
     bin.reader <- file(paste0(fhead, '.bin'), 'rb')
@@ -486,11 +486,11 @@ computeProduct <- function(residual, pfile, vars, stats, configs, iter) {
   cmd_plink2 <- paste(
     configs[['plink2.path']],
     '--threads', configs[['nCores']],
-    '--pfile', pfile, ifelse(configs[['vzs']], 'vzs', ''),
+    '--pfile', pfile,
     '--read-freq', paste0(configs[['gcount.full.prefix']], '.gcount'),
     '--keep', residual_f,
     '--out', stringr::str_replace_all(residual_f, '.tsv$', ''),
-    '--variant-score', residual_f, 'zs', 'bin'
+    '--variant-score', residual_f, 'bin'
   )
   if (!is.null(configs[['mem']])) {
     cmd_plink2 <- paste(cmd_plink2, '--memory', as.integer(configs[['mem']]) - ceiling(sum(as.matrix(gc_res)[,2])))
