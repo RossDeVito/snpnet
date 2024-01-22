@@ -311,8 +311,9 @@ readPheMaster <- function(phenotype.file, psam.ids, family, covariates, phenotyp
         selectCols <- c("FID", "IID", covariates, phenotype, split.col)
     }
 
+    # Old version: cmd=paste(cat_or_zcat(phenotype.file, configs), phenotype.file, ' | sed -e "s/^#//g"'),
     phe.master.unsorted <- data.table::fread(
-      cmd=paste(cat_or_zcat(phenotype.file, configs), phenotype.file, ' | sed -e "s/^#//g"'),
+      phenotype.file,
       colClasses = c("FID" = "character", "IID" = "character"), select = selectCols
     )
     phe.master.unsorted$ID <- paste(phe.master.unsorted$FID, phe.master.unsorted$IID, sep = "_")
