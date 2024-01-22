@@ -299,6 +299,10 @@ readPlinkKeepFile <- function(keep_file){
 #' @export
 readPheMaster <- function(phenotype.file, psam.ids, family, covariates, phenotype, status, split.col, configs){
 
+  print("Start readPheMaster")
+  print(phenotype.file)
+  flush.console()
+  
   sort_order <- . <- ID <- NULL  # to deal with "no visible binding for global variable"
 
   if(!is.null(family) && family == 'cox'){
