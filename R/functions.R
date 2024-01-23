@@ -477,10 +477,11 @@ computeProduct <- function(residual, pfile, vars, stats, configs, iter) {
   # write residuals to a file
   residual_df <- data.frame(residual)
   colnames(residual_df) <- paste0('lambda_idx_', colnames(residual))
+
+  # Modified to just use IID
   residual_df %>%
-    tibble::rownames_to_column("ID") %>%
-    tidyr::separate(ID, into=c('#FID', 'IID'), sep='_') %>%
-    data.table::fwrite(residual_f, sep='\t', col.names=T)
+    tibble::rownames_to_column("#IID") %>%  # Rename 'ID' to '#IID'
+    data.table::fwrite(residual_f, sep='\t', col.names=TRUE)
 
   # Run plink2 --geno-counts
   cmd_plink2 <- paste(
