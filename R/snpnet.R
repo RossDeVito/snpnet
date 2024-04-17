@@ -535,6 +535,6 @@ snpnet <- function(genotype.pfile, phenotype.file, phenotype, family = NULL, cov
 
   out <- list(metric.train = metric.train, metric.val = metric.val, glmnet.results = glmnet.results,
               full.lams = full.lams, a0 = a0, beta = beta, configs = configs, var.rank=var.rank,
-              stats = stats)
+              stats = stats, features.to.keep = features.to.keep)
   out
 }
